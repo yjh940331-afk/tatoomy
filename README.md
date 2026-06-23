@@ -14,20 +14,21 @@ tatoomy/
 │  ├─ site-config.js       ← settings.json 이 없을 때 쓰는 기본값(폴백)
 │  └─ main.js              ← 동작 코드 (수정 불필요)
 ├─ content/settings.json   ← ★ 실제 내용(사진·문구·가격·후기 …)
-├─ admin/                  ← 사장님용 관리자(Decap CMS)
+├─ admin/                  ← 사장님용 관리자(Sveltia CMS)
 └─ images/uploads/         ← 업로드 사진 보관 폴더
 ```
 
 > 현재 `images/uploads/`의 사진들은 **Pexels 무료 라이선스 스톡사진**(상업적 사용·출처표기 불필요)으로
 > 채운 **샘플**입니다. 실제 작가님의 작업 사진으로 교체해 주세요.
 
-## ⭐ 사장님용 관리자 (Decap CMS · 코딩/토큰 필요 없음)
+## ⭐ 사장님용 관리자 (Sveltia CMS · 코딩/토큰 필요 없음)
 
-**이메일·비밀번호로 로그인 → 사진 드래그 업로드 → Publish(게시)** 만 하면 됩니다.
+**GitHub 로그인 → 사진 드래그 업로드 → Publish(게시)** 만 하면 됩니다.
 
 ### 여는 법
 - 주소: **`https://www.tatoo.my/admin/`** (배포 후)
-- Netlify에서 받은 **초대 메일**로 비밀번호를 한 번 설정하면, 이후엔 이메일/비번으로 로그인.
+- GitHub 계정으로 로그인하면 관리자 화면에서 바로 내용을 수정할 수 있습니다.
+- 인증은 Cloudflare Worker의 Sveltia CMS auth를 통해 처리합니다.
 
 ### 할 수 있는 것 (모두 한 화면에서)
 - 📷 포트폴리오 앨범 추가/삭제/순서, 앨범 안 사진 업로드 (🎬 유튜브 영상 ID로 영상도 가능)
@@ -41,8 +42,9 @@ tatoomy/
 - CMS 설정/스키마: `admin/config.yml`, 편집 UI: `admin/index.html`
 - `js/site-config.js` 는 `settings.json` 이 없을 때를 대비한 기본값(폴백)입니다.
 
-> 🔧 **개발자 1회 설정(Netlify)**: 저장소를 Netlify에 연결 → **Identity** 켜고 **invite only** →
-> **Git Gateway** 켜기 → 사장님 이메일 **Invite** → 도메인(www.tatoo.my)을 Netlify로 연결.
+> 🔧 **개발자 1회 설정(Cloudflare Pages)**: 저장소를 Cloudflare Pages에 연결 →
+> 빌드 명령 없음 / 출력 디렉터리 `.` → 도메인 `www.tatoo.my` 연결 →
+> Sveltia CMS GitHub OAuth 앱/Worker의 허용 저장소에 `yjh940331-afk/tatoomy` 추가.
 
 ## 🎨 색상·폰트 변경
 `css/style.css` 맨 위의 `:root { ... }` 변수 값만 바꾸면 전체 톤이 바뀝니다.
@@ -59,10 +61,10 @@ tatoomy/
 ### 영상 넣기 🎬
 앨범 안 사진 목록에서 유튜브 영상 ID(`youtu.be/ABCD1234` 의 `ABCD1234`)만 넣으면 영상이 됩니다.
 
-## 🌐 배포 (GitHub → Netlify)
+## 🌐 배포 (GitHub → Cloudflare Pages)
 1. 이 폴더를 GitHub 저장소(`yjh940331-afk/tatoomy`)에 push 합니다.
-2. Netlify에 저장소를 연결합니다. (빌드 명령 없음 / publish: `.`)
-3. Identity + Git Gateway 설정 후 도메인 `www.tatoo.my` 를 연결합니다.
+2. Cloudflare Pages에 저장소를 연결합니다. (빌드 명령 없음 / output: `.`)
+3. Sveltia CMS auth worker 설정 후 도메인 `www.tatoo.my` 를 연결합니다.
 
 ## 💻 로컬에서 미리보기
 정적 파일이라 로컬 서버에서 열면 됩니다. (`content/settings.json` 을 `fetch` 하므로

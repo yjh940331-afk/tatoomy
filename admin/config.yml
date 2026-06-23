@@ -1,6 +1,8 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: yjh940331-afk/tatoomy
   branch: main
+  base_url: https://sveltia-cms-auth.yjh940331.workers.dev
 
 # 업로드한 사진이 저장되는 폴더 (Git 기본 미디어 라이브러리)
 media_folder: "images/uploads"
@@ -27,7 +29,6 @@ collections:
           # ---------- 기본 정보 ----------
           - { label: "브랜드명", name: "brand", widget: "string", hint: "사이트 곳곳에 표시되는 이름" }
           - { label: "한 줄 문구(태그라인)", name: "tagline", widget: "string" }
-          - { label: "정책 고지(푸터)", name: "policy", widget: "string", required: false, hint: "예: 19세 미만 시술 불가 · 예약금 입금 후 예약 확정 · 노쇼 환불 불가" }
           - { label: "인스타그램 주소", name: "instagram", widget: "string", required: false }
           - { label: "카카오톡 채널 주소", name: "kakao", widget: "string", required: false }
           - { label: "네이버 블로그 주소", name: "naverBlog", widget: "string", required: false }
