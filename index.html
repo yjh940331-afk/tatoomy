@@ -4,13 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>tatoomy · 타투 스튜디오</title>
-  <meta name="description" content="tatoomy - 라인워크부터 블랙워크까지, 당신의 이야기를 새기는 타투. 도안 상담·예약 안내." />
-
-  <!-- 폰트 -->
+  <meta name="description" content="tatoomy - 라인워크부터 블랙워크까지, 당신의 이야기를 새기는 타투. 플래시·도안 상담·예약 안내." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
-
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -19,10 +16,10 @@
   <header class="site-header" id="header">
     <div class="header-inner">
       <a href="#hero" class="logo" data-brand>tatoomy</a>
-
       <nav class="nav" id="nav">
         <a href="#about">About</a>
         <a href="#artist">Artist</a>
+        <a href="#flash">Flash</a>
         <a href="#portfolio">Portfolio</a>
         <a href="#price">Price</a>
         <a href="#process">Process</a>
@@ -30,7 +27,6 @@
         <a href="#location">Location</a>
         <a href="#contact">Contact</a>
       </nav>
-
       <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
         <span></span><span></span><span></span>
       </button>
@@ -90,7 +86,22 @@
       <p class="section-label">SAFETY &amp; HYGIENE</p>
       <h2 class="section-title">안심하고 맡길 수 있도록</h2>
     </div>
-    <div class="trust-grid" id="trustGrid"><!-- JS로 자동 생성 --></div>
+    <div class="trust-grid" id="trustGrid"></div>
+  </section>
+
+  <!-- ============ 플래시 ============ -->
+  <section class="flash-section section" id="flash">
+    <div class="section-head reveal">
+      <div class="flash-head-inner">
+        <div>
+          <p class="section-label">FLASH</p>
+          <h2 class="section-title">지금 바로 할 수 있는 도안</h2>
+          <p class="flash-desc">도안이 완성되어 있어 당일·단기 예약이 가능합니다. 선착순으로 마감됩니다.</p>
+        </div>
+        <a href="#contact" class="flash-all-btn">예약 문의 →</a>
+      </div>
+    </div>
+    <div class="flash-grid" id="flashGrid"></div>
   </section>
 
   <!-- ============ 포트폴리오 ============ -->
@@ -99,17 +110,26 @@
       <p class="section-label">PORTFOLIO</p>
       <h2 class="section-title">작업물</h2>
     </div>
-
     <div class="filters reveal" id="filters">
-      <button class="filter active" data-filter="linework">라인워크</button>
+      <button class="filter active" data-filter="all">전체</button>
+      <button class="filter filter-healed" data-filter="healed">✦ 힐드</button>
+      <button class="filter" data-filter="linework">라인워크</button>
       <button class="filter" data-filter="blackwork">블랙워크</button>
       <button class="filter" data-filter="color">컬러</button>
       <button class="filter" data-filter="lettering">레터링</button>
       <button class="filter" data-filter="minimal">미니멀</button>
       <button class="filter" data-filter="coverup">커버업</button>
     </div>
+    <div class="gallery" id="gallery"></div>
+  </section>
 
-    <div class="gallery" id="gallery"><!-- JS로 자동 생성 --></div>
+  <!-- ============ 작업 영상 ============ -->
+  <section class="videos-section section" id="videos" hidden>
+    <div class="section-head center reveal">
+      <p class="section-label">REEL</p>
+      <h2 class="section-title">작업 영상</h2>
+    </div>
+    <div class="video-grid" id="videoGrid"></div>
   </section>
 
   <!-- ============ 가격 ============ -->
@@ -118,8 +138,8 @@
       <p class="section-label">PRICE</p>
       <h2 class="section-title">작업 안내</h2>
     </div>
-    <div class="price-grid" id="priceGrid"><!-- JS로 자동 생성 --></div>
-    <div class="product-guide reveal" id="productGuide"><!-- JS로 자동 생성 --></div>
+    <div class="price-grid" id="priceGrid"></div>
+    <div class="product-guide reveal" id="productGuide"></div>
     <p class="price-note reveal">* 도안·사이즈·부위에 따라 가격이 달라집니다. 정확한 견적은 도안 상담 후 안내해 드립니다.</p>
   </section>
 
@@ -129,7 +149,17 @@
       <p class="section-label">PROCESS</p>
       <h2 class="section-title">진행 절차</h2>
     </div>
-    <div class="process-list" id="processList"><!-- JS로 자동 생성 --></div>
+    <div class="process-list" id="processList"></div>
+  </section>
+
+  <!-- ============ 게스트워크 ============ -->
+  <section class="guestwork section" id="guestwork" hidden>
+    <div class="section-head reveal">
+      <p class="section-label">GUEST WORK</p>
+      <h2 class="section-title">게스트워크 일정</h2>
+      <p class="guestwork-desc">지방·해외 스튜디오를 방문해 작업합니다. 방문 예약은 DM으로 먼저 문의해 주세요.</p>
+    </div>
+    <div class="guestwork-grid" id="guestworkGrid"></div>
   </section>
 
   <!-- ============ 애프터케어 ============ -->
@@ -143,11 +173,11 @@
       <div class="aftercare-cols">
         <div class="aftercare-card reveal">
           <h3>이렇게 관리해 주세요</h3>
-          <ol id="aftercareSteps"><!-- JS로 자동 생성 --></ol>
+          <ol id="aftercareSteps"></ol>
         </div>
         <div class="aftercare-card caution reveal">
           <h3>주의사항</h3>
-          <ul id="aftercareCautions"><!-- JS로 자동 생성 --></ul>
+          <ul id="aftercareCautions"></ul>
         </div>
       </div>
     </div>
@@ -159,7 +189,7 @@
       <p class="section-label">REVIEW</p>
       <h2 class="section-title">손님 후기</h2>
     </div>
-    <div class="review-grid" id="reviewGrid"><!-- JS로 자동 생성 --></div>
+    <div class="review-grid" id="reviewGrid"></div>
   </section>
 
   <!-- ============ 예약 가능 일정 ============ -->
@@ -172,7 +202,7 @@
       </div>
       <div class="availability-panel">
         <p data-availability-status>이번 달 예약 마감 임박 · 다음 달 상담 중</p>
-        <ul id="availabilityList"><!-- JS로 자동 생성 --></ul>
+        <ul id="availabilityList"></ul>
       </div>
     </div>
   </section>
@@ -184,11 +214,11 @@
       <h2 class="section-title" data-location-title>오시는 길</h2>
     </div>
     <div class="location-grid reveal">
-      <div class="location-map" id="locationMap"><!-- JS로 자동 생성 (지도) --></div>
+      <div class="location-map" id="locationMap"></div>
       <div class="location-info">
         <p class="loc-address" data-location-address></p>
         <p class="loc-note" data-location-note></p>
-        <ul class="loc-transit" id="locationTransit"><!-- JS로 자동 생성 --></ul>
+        <ul class="loc-transit" id="locationTransit"></ul>
       </div>
     </div>
   </section>
@@ -199,7 +229,25 @@
       <p class="section-label">Q&amp;A</p>
       <h2 class="section-title">자주 묻는 질문</h2>
     </div>
-    <div class="faq-list" id="faqList"><!-- JS로 자동 생성 --></div>
+    <div class="faq-list" id="faqList"></div>
+  </section>
+
+  <!-- ============ 뉴스레터 배너 ============ -->
+  <section class="newsletter-banner" id="newsletter" hidden>
+    <div class="nl-inner">
+      <div class="nl-copy">
+        <p class="section-label">OPEN ALERT</p>
+        <h2 class="nl-title" id="nlTitle">예약 오픈 알림 신청</h2>
+        <p class="nl-desc" id="nlDesc">다음 예약이 열릴 때 제일 먼저 알려드려요.</p>
+      </div>
+      <form class="nl-form" id="nlForm" name="newsletter" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="newsletter" />
+        <input type="hidden" name="bot-field" />
+        <input class="nl-input" type="email" name="email" required placeholder="이메일 주소를 입력하세요" />
+        <button class="nl-btn" type="submit">알림 신청</button>
+      </form>
+      <p class="nl-status" id="nlStatus"></p>
+    </div>
   </section>
 
   <!-- ============ 문의 ============ -->
@@ -221,18 +269,33 @@
       </div>
       <label>도안 / 문의 내용</label>
       <textarea name="message" rows="4" placeholder="원하시는 도안, 스타일, 일정 등을 적어주세요."></textarea>
+      <label class="policy-check">
+        <input type="checkbox" name="policy" id="policyCheck" required />
+        <span><button type="button" class="policy-link" id="openPolicy">예약 정책</button>을 읽었으며 동의합니다 *</span>
+      </label>
       <button type="submit" class="bf-submit">상담 문의 보내기</button>
       <p class="bf-status" id="bookingStatus"></p>
     </form>
 
     <p class="contact-or reveal">또는 아래 채널로 편하게 연락 주세요</p>
-    <div class="contact-links reveal" id="contactLinks"><!-- JS로 자동 생성 --></div>
+    <div class="contact-links reveal" id="contactLinks"></div>
+  </section>
+
+  <!-- ============ 인스타그램 CTA ============ -->
+  <section class="insta-cta" id="instagram">
+    <div class="insta-inner">
+      <p class="section-label">INSTAGRAM</p>
+      <h2 class="insta-handle" id="instaHandle">@tatoomy</h2>
+      <p class="insta-sub">최신 작업물과 플래시 소식을 인스타그램에서 확인하세요.</p>
+      <div class="insta-grid" id="instaGrid"></div>
+      <a class="insta-follow-btn" id="instaFollowBtn" href="https://instagram.com/tatoomy" target="_blank" rel="noopener">Follow on Instagram</a>
+    </div>
   </section>
 
   <!-- ============ 푸터 ============ -->
   <footer class="site-footer">
     <p class="footer-brand" data-brand>tatoomy</p>
-    <p class="footer-policy" data-policy>19세 미만 시술 불가 · 예약금 입금 후 예약 확정 · 노쇼 시 예약금 환불 불가</p>
+    <p class="footer-policy">19세 미만 시술 불가 · 예약금 입금 후 예약 확정 · 노쇼 시 예약금 환불 불가</p>
     <p class="footer-copy">© <span id="year"></span> tatoomy. All rights reserved.</p>
   </footer>
 
@@ -240,11 +303,23 @@
   <div class="lightbox" id="lightbox">
     <button class="lb-close" id="lbClose" aria-label="닫기">&times;</button>
     <button class="lb-nav lb-prev" id="lbPrev" aria-label="이전">&#8249;</button>
-    <div class="lb-stage" id="lbStage"><!-- 사진/영상이 들어갑니다 --></div>
+    <div class="lb-stage" id="lbStage"></div>
     <button class="lb-nav lb-next" id="lbNext" aria-label="다음">&#8250;</button>
   </div>
 
-  <!-- 기본값(폴백) → CMS가 관리하는 settings.json 으로 덮어쓴 뒤 앱 실행 -->
+  <!-- ============ 예약 정책 모달 ============ -->
+  <div class="policy-modal" id="policyModal" role="dialog" aria-modal="true" aria-labelledby="policyModalTitle">
+    <div class="pm-backdrop" id="pmBackdrop"></div>
+    <div class="pm-inner">
+      <button class="pm-close" id="pmClose" aria-label="닫기">&times;</button>
+      <p class="section-label">BOOKING POLICY</p>
+      <h2 class="pm-title" id="policyModalTitle">예약 정책</h2>
+      <ul class="pm-list" id="policyList"></ul>
+      <button class="pm-agree-btn" id="pmAgreeBtn" type="button">확인했습니다</button>
+    </div>
+  </div>
+
+  <!-- 기본값(폴백) → CMS settings.json 으로 덮어쓴 뒤 앱 실행 -->
   <script src="js/site-config.js"></script>
   <script>
     (function () {
@@ -252,19 +327,15 @@
       fetch("content/settings.json", { cache: "no-store" })
         .then(function (r) { if (!r.ok) throw 0; return r.json(); })
         .then(function (j) { window.SITE_CONFIG = j; })
-        .catch(function () { /* settings.json 없으면 site-config.js 기본값 사용 */ })
+        .catch(function () {})
         .then(run);
     })();
   </script>
-
-  <!-- Netlify Identity: 관리자 초대 링크 처리 후 /admin/ 으로 이동 -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on("init", function (user) {
-        if (!user) {
-          window.netlifyIdentity.on("login", function () { document.location.href = "/admin/"; });
-        }
+        if (!user) { window.netlifyIdentity.on("login", function () { document.location.href = "/admin/"; }); }
       });
     }
   </script>

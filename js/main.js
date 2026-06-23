@@ -2,7 +2,6 @@
    tatoomy · 동작 스크립트
    site-config.js / settings.json 내용을 화면에 그려주고,
    갤러리/메뉴/라이트박스를 제어합니다.
-   일반적인 경우 이 파일은 수정할 필요가 없습니다.
    ============================================================ */
 (function () {
   "use strict";
@@ -16,7 +15,6 @@
     });
   }
 
-  /* 여러 줄 텍스트(배열/문자열/객체배열) → 문자열 배열로 정규화 (CMS 출력 호환) */
   function lines(v) {
     if (Array.isArray(v)) return v.map(function (x) {
       return typeof x === "string" ? x : (x && (x.line || x.item || x.feature || x.text || x.step)) || "";
@@ -36,7 +34,6 @@
   function categoryLabel(v) { return STYLES[v] || "Tattoo"; }
   function normalizeCategory(v) { return STYLES[v] ? v : (v || "linework"); }
 
-  /* 포트폴리오 항목 정규화 — 사진/영상/CMS 형식 모두 처리 */
   function normItem(it) {
     if (!it) return { type: "photo", src: "" };
     if (it.youtube || it.id) return { type: "youtube", id: it.youtube || it.id, category: it.category, caption: it.caption, poster: it.poster || it.cover };
@@ -62,6 +59,7 @@
       category: normalizeCategory(album.category || first.category),
       description: album.description || album.desc || "",
       cover: album.cover || album.image || thumbOf(first),
+      healed: !!album.healed,
       items: items,
     };
   }
@@ -69,7 +67,6 @@
   function buildAlbums() {
     var rawAlbums = C.portfolioAlbums || C.albums || [];
     if (rawAlbums.length) return rawAlbums.map(normalizeAlbum).filter(function (album) { return album.items.length; });
-
     var groups = [];
     var byKey = {};
     (C.portfolio || []).forEach(function (item) {
@@ -78,7 +75,7 @@
       var title = item.album || item.caption || categoryLabel(normalized.category);
       var key = (normalized.category || "all") + "|" + title;
       if (!byKey[key]) {
-        byKey[key] = { title: title, category: normalizeCategory(normalized.category), description: "", cover: thumbOf(normalized), items: [] };
+        byKey[key] = { title: title, category: normalizeCategory(normalized.category), description: "", cover: thumbOf(normalized), healed: false, items: [] };
         groups.push(byKey[key]);
       }
       byKey[key].items.push(normalized);
@@ -91,19 +88,18 @@
   /* ---------- 기본 텍스트/이미지 채우기 ---------- */
   $$("[data-brand]").forEach(function (el) { if (C.brand) el.textContent = C.brand; });
   if (C.tagline) { var tg = $("[data-tagline]"); if (tg) tg.textContent = C.tagline; }
-  if (C.policy) { var pol = $("[data-policy]"); if (pol) pol.textContent = C.policy; }
 
   if (C.hero) {
     var hb = $("[data-hero-bg]");
     if (hb && C.hero.image) hb.style.backgroundImage = "url('" + C.hero.image + "')";
-    if (C.hero.title) $("[data-hero-title]").textContent = C.hero.title;
-    if (C.hero.subtitle) $("[data-hero-sub]").textContent = C.hero.subtitle;
+    if (C.hero.title && $("[data-hero-title]")) $("[data-hero-title]").textContent = C.hero.title;
+    if (C.hero.subtitle && $("[data-hero-sub]")) $("[data-hero-sub]").textContent = C.hero.subtitle;
   }
 
   if (C.about) {
     var ai = $("[data-about-img]");
     if (ai && C.about.image) ai.src = C.about.image;
-    if (C.about.title) $("[data-about-title]").textContent = C.about.title;
+    if (C.about.title && $("[data-about-title]")) $("[data-about-title]").textContent = C.about.title;
     var ab = $("[data-about-body]");
     if (ab && C.about.body) ab.innerHTML = lines(C.about.body).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
   }
@@ -111,20 +107,14 @@
   /* ---------- 타투이스트 프로필 ---------- */
   var artist = C.artist || C.photographer;
   if (artist) {
-    var aTitle = $("[data-artist-title]");
-    var aRole = $("[data-artist-role]");
-    var aImg = $("[data-artist-img]");
+    if ($("[data-artist-title]")) $("[data-artist-title]").textContent = artist.title || ("타투이스트 " + (artist.name || ""));
+    if ($("[data-artist-role]")) $("[data-artist-role]").textContent = artist.role || "";
+    if ($("[data-artist-img]")) $("[data-artist-img]").src = artist.image || "";
     var aBody = $("[data-artist-body]");
-    var aPromise = $("[data-artist-promise]");
-    var aCount = $("[data-artist-count]");
-    var aCountLabel = $("[data-artist-count-label]");
-    if (aTitle) aTitle.textContent = artist.title || ("타투이스트 " + (artist.name || ""));
-    if (aRole) aRole.textContent = artist.role || "tatoomy 타투이스트";
-    if (aImg) aImg.src = artist.image || (C.about && C.about.image) || "";
-    if (aBody) aBody.innerHTML = lines(artist.body || artist.philosophy).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
-    if (aPromise) aPromise.textContent = artist.promise || "";
-    if (aCount) aCount.textContent = artist.workCount || artist.shootCount || artist.count || "";
-    if (aCountLabel && artist.countLabel) aCountLabel.textContent = artist.countLabel;
+    if (aBody) aBody.innerHTML = lines(artist.body || artist.philosophy || "").map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
+    if ($("[data-artist-promise]")) $("[data-artist-promise]").textContent = artist.promise || "";
+    if ($("[data-artist-count]")) $("[data-artist-count]").textContent = artist.workCount || artist.shootCount || artist.count || "";
+    if ($("[data-artist-count-label]") && artist.countLabel) $("[data-artist-count-label]").textContent = artist.countLabel;
   }
 
   var yr = $("#year"); if (yr) yr.textContent = new Date().getFullYear();
@@ -141,6 +131,46 @@
     }).join("");
   }
 
+  /* ---------- 플래시 섹션 ---------- */
+  var flashGrid = $("#flashGrid");
+  if (flashGrid && C.flash && C.flash.length) {
+    flashGrid.innerHTML = C.flash.map(function (item) {
+      var avail = item.available !== false;
+      var cardClass = "flash-card reveal" + (avail ? "" : " booked");
+      var bookBtn = avail
+        ? '<button class="flash-book-btn" type="button" data-flash-title="' + esc(item.title) + '">예약하기</button>'
+        : "";
+      var bookedOverlay = avail ? "" : '<div class="flash-booked-overlay"><span>BOOKED</span></div>';
+      var info = [item.size, item.part].filter(Boolean).join(" · ");
+      return '<div class="' + cardClass + '">' +
+        '<img src="' + esc(item.image || "") + '" alt="' + esc(item.title || "") + '" loading="lazy" />' +
+        '<div class="flash-price-tag">' + esc(item.price || "") + '</div>' +
+        '<div class="flash-card-info">' +
+          '<strong>' + esc(item.title || "") + '</strong>' +
+          (info ? '<small>' + esc(info) + '</small>' : '') +
+        '</div>' +
+        bookBtn +
+        bookedOverlay +
+      '</div>';
+    }).join("");
+
+    $$(".flash-book-btn", flashGrid).forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var title = btn.dataset.flashTitle;
+        var contact = document.getElementById("contact");
+        if (contact) {
+          contact.scrollIntoView({ behavior: "smooth" });
+          var msgBox = contact.querySelector("textarea[name='message']");
+          if (msgBox && !msgBox.value) msgBox.value = "[플래시 예약] " + title + " 예약 문의드립니다.";
+        }
+      });
+    });
+  } else {
+    var flashSection = document.getElementById("flash");
+    if (flashSection) flashSection.hidden = true;
+  }
+
   /* ---------- 포트폴리오 갤러리 ---------- */
   var gallery = $("#gallery");
   var galleryAlbums = [];
@@ -149,16 +179,22 @@
     gallery.innerHTML = "";
     galleryAlbums = [];
     ALBUMS.forEach(function (album) {
-      if (filter && filter !== "all" && album.category !== filter) return;
+      if (filter === "healed") {
+        if (!album.healed) return;
+      } else if (filter && filter !== "all") {
+        if (album.category !== filter) return;
+      }
       var index = galleryAlbums.length;
       galleryAlbums.push(album);
       var fig = document.createElement("div");
       fig.className = "gallery-item album-card reveal";
       fig.dataset.index = index;
-      fig.style.transitionDelay = ((gallery.children.length % 3) * 0.08) + "s";
+      fig.style.transitionDelay = ((galleryAlbums.length % 3) * 0.08) + "s";
+      var healedBadge = album.healed ? '<span class="badge-healed">HEALED</span>' : "";
       fig.innerHTML =
         '<img src="' + esc(album.cover) + '" alt="' + esc(album.title) + '" loading="lazy" />' +
         '<span class="album-count">' + album.items.length + "장</span>" +
+        healedBadge +
         '<span class="cap"><span class="album-meta">' +
           "<strong>" + esc(album.title) + "</strong>" +
           '<em>' + esc(album.description || categoryLabel(album.category)) + " · 클릭해서 보기</em>" +
@@ -176,6 +212,22 @@
       renderGallery(btn.dataset.filter);
     });
   });
+
+  /* ---------- 영상 섹션 ---------- */
+  (function () {
+    var videos = C.videos || [];
+    var real = videos.filter(function (v) { return v.id && v.id.length > 3 && !v.id.toLowerCase().includes("replace"); });
+    var videoSection = document.getElementById("videos");
+    var videoGrid = document.getElementById("videoGrid");
+    if (!real.length || !videoSection || !videoGrid) return;
+    videoSection.hidden = false;
+    videoGrid.innerHTML = real.map(function (v) {
+      return '<div class="video-embed reveal">' +
+        '<iframe src="https://www.youtube.com/embed/' + esc(v.id) + '?rel=0" loading="lazy" allow="encrypted-media; fullscreen" allowfullscreen title="' + esc(v.caption || "작업 영상") + '"></iframe>' +
+        '<p class="video-caption">' + esc(v.caption || "") + "</p>" +
+      "</div>";
+    }).join("");
+  })();
 
   /* ---------- 가격 카드 ---------- */
   var priceGrid = $("#priceGrid");
@@ -219,15 +271,36 @@
     }).join("");
   }
 
+  /* ---------- 게스트워크 섹션 ---------- */
+  (function () {
+    var guestwork = C.guestwork || [];
+    var gwSection = document.getElementById("guestwork");
+    var gwGrid = document.getElementById("guestworkGrid");
+    if (!guestwork.length || !gwSection || !gwGrid) return;
+    gwSection.hidden = false;
+    gwGrid.innerHTML = guestwork.map(function (g, i) {
+      var dmLink = g.link
+        ? '<a class="gw-dm-btn" href="' + esc(g.link) + '" target="_blank" rel="noopener">예약 DM →</a>'
+        : '<a class="gw-dm-btn" href="' + esc(C.instagram || "#") + '" target="_blank" rel="noopener">예약 DM →</a>';
+      return '<div class="guestwork-card reveal" style="transition-delay:' + (i * 0.07) + 's">' +
+        '<div class="gw-date">' + esc(g.date || "") + '</div>' +
+        '<div class="gw-studio">' + esc(g.studio || "") + '</div>' +
+        '<div class="gw-city">' + esc(g.city || "") + '</div>' +
+        '<div class="gw-footer">' +
+          '<span class="gw-slots">잔여 <strong>' + esc(String(g.slots != null ? g.slots : "")) + '</strong> 슬롯</span>' +
+          dmLink +
+        '</div>' +
+      '</div>';
+    }).join("");
+  })();
+
   /* ---------- 애프터케어 ---------- */
   if (C.aftercare) {
     var ac = C.aftercare;
-    var acTitle = $("[data-aftercare-title]");
-    var acIntro = $("[data-aftercare-intro]");
+    if ($("[data-aftercare-title]") && ac.title) $("[data-aftercare-title]").textContent = ac.title;
+    if ($("[data-aftercare-intro]")) $("[data-aftercare-intro]").textContent = ac.intro || "";
     var acSteps = $("#aftercareSteps");
     var acCautions = $("#aftercareCautions");
-    if (acTitle && ac.title) acTitle.textContent = ac.title;
-    if (acIntro) acIntro.textContent = ac.intro || "";
     if (acSteps) acSteps.innerHTML = listHtml(ac.steps);
     if (acCautions) acCautions.innerHTML = listHtml(ac.cautions);
   }
@@ -250,28 +323,22 @@
   /* ---------- 예약 가능 일정 ---------- */
   if (C.availability) {
     var av = C.availability;
-    var avTitle = $("[data-availability-title]");
-    var avStatus = $("[data-availability-status]");
-    var avNote = $("[data-availability-note]");
+    if ($("[data-availability-title]") && av.title) $("[data-availability-title]").textContent = av.title;
+    if ($("[data-availability-status]") && av.status) $("[data-availability-status]").textContent = av.status;
+    if ($("[data-availability-note]")) $("[data-availability-note]").textContent = av.note || "";
     var avList = $("#availabilityList");
-    if (avTitle && av.title) avTitle.textContent = av.title;
-    if (avStatus && av.status) avStatus.textContent = av.status;
-    if (avNote) avNote.textContent = av.note || "";
     if (avList) avList.innerHTML = listHtml(av.items);
   }
 
   /* ---------- 오시는 길 ---------- */
   if (C.location) {
     var loc = C.location;
-    var locTitle = $("[data-location-title]");
-    var locAddr = $("[data-location-address]");
-    var locNote = $("[data-location-note]");
-    var locMap = $("#locationMap");
+    if ($("[data-location-title]") && loc.title) $("[data-location-title]").textContent = loc.title;
+    if ($("[data-location-address]")) $("[data-location-address]").textContent = loc.address || "";
+    if ($("[data-location-note]")) $("[data-location-note]").textContent = loc.note || "";
     var locTransit = $("#locationTransit");
-    if (locTitle && loc.title) locTitle.textContent = loc.title;
-    if (locAddr) locAddr.textContent = loc.address || "";
-    if (locNote) locNote.textContent = loc.note || "";
     if (locTransit) locTransit.innerHTML = listHtml(loc.transit);
+    var locMap = $("#locationMap");
     if (locMap) {
       if (loc.mapEmbed) {
         locMap.innerHTML = '<iframe src="' + esc(loc.mapEmbed) + '" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" title="지도"></iframe>';
@@ -303,20 +370,49 @@
           r.classList.remove("open");
           r.querySelector(".faq-a").style.maxHeight = null;
         });
-        if (!open) {
-          row.classList.add("open");
-          panel.style.maxHeight = panel.scrollHeight + "px";
-        }
+        if (!open) { row.classList.add("open"); panel.style.maxHeight = panel.scrollHeight + "px"; }
       });
       faqList.appendChild(row);
     });
   }
 
+  /* ---------- 뉴스레터 ---------- */
+  (function () {
+    var nlSection = document.getElementById("newsletter");
+    var nlForm = document.getElementById("nlForm");
+    var nlStatus = document.getElementById("nlStatus");
+    var nl = C.newsletter;
+    if (!nl || (!nl.endpoint && !nl.title) || !nlSection) return;
+    nlSection.hidden = false;
+    if (nl.title && document.getElementById("nlTitle")) document.getElementById("nlTitle").textContent = nl.title;
+    if (nl.desc && document.getElementById("nlDesc")) document.getElementById("nlDesc").textContent = nl.desc;
+    if (!nlForm) return;
+    nlForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var email = (nlForm.querySelector("input[name='email']") || {}).value;
+      if (!email) return;
+      if (nl.endpoint) {
+        fetch(nl.endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email }) })
+          .then(function (r) {
+            nlStatus.className = r.ok ? "nl-status ok" : "nl-status err";
+            nlStatus.textContent = r.ok ? "알림 신청이 완료되었어요!" : "오류가 발생했어요. 다시 시도해 주세요.";
+          }).catch(function () {
+            nlStatus.className = "nl-status err";
+            nlStatus.textContent = "오류가 발생했어요.";
+          });
+      } else {
+        nlStatus.className = "nl-status ok";
+        nlStatus.textContent = "감사합니다! 예약이 열리면 알려드릴게요.";
+        nlForm.reset();
+      }
+    });
+  })();
+
   /* ---------- 문의 링크 ---------- */
   var cl = $("#contactLinks");
   if (cl) {
     var links = [];
-    if (C.instagram) links.push('<a href="' + esc(C.instagram) + '" target="_blank" rel="noopener">Instagram</a>');
+    if (C.instagram) links.push('<a href="' + esc(C.instagram) + '" target="_blank" rel="noopener">Instagram DM</a>');
     if (C.kakao) links.push('<a href="' + esc(C.kakao) + '" target="_blank" rel="noopener">카카오톡 채널</a>');
     if (C.naverBlog) links.push('<a href="' + esc(C.naverBlog) + '" target="_blank" rel="noopener">네이버 블로그</a>');
     if (C.youtube) links.push('<a href="' + esc(C.youtube) + '" target="_blank" rel="noopener">YouTube</a>');
@@ -324,6 +420,46 @@
     if (C.email) links.push('<a href="mailto:' + esc(C.email) + '">' + esc(C.email) + "</a>");
     cl.innerHTML = links.join("");
   }
+
+  /* ---------- 예약 정책 모달 ---------- */
+  var policyModal = document.getElementById("policyModal");
+  var policyList = document.getElementById("policyList");
+  var policyCheck = document.getElementById("policyCheck");
+
+  if (policyList && C.policy && C.policy.items) {
+    policyList.innerHTML = C.policy.items.map(function (item) {
+      return "<li>" + esc(item) + "</li>";
+    }).join("");
+    if ($(".pm-title") && C.policy.title) $(".pm-title").textContent = C.policy.title;
+  }
+
+  function openPolicyModal() {
+    if (policyModal) policyModal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function closePolicyModal() {
+    if (policyModal) policyModal.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  var openPolicyBtn = document.getElementById("openPolicy");
+  if (openPolicyBtn) openPolicyBtn.addEventListener("click", openPolicyModal);
+
+  var pmClose = document.getElementById("pmClose");
+  if (pmClose) pmClose.addEventListener("click", closePolicyModal);
+
+  var pmBackdrop = document.getElementById("pmBackdrop");
+  if (pmBackdrop) pmBackdrop.addEventListener("click", closePolicyModal);
+
+  var pmAgreeBtn = document.getElementById("pmAgreeBtn");
+  if (pmAgreeBtn) pmAgreeBtn.addEventListener("click", function () {
+    if (policyCheck) policyCheck.checked = true;
+    closePolicyModal();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (policyModal && policyModal.classList.contains("open") && e.key === "Escape") closePolicyModal();
+  });
 
   /* ---------- 상담 문의 폼 ---------- */
   var bForm = $("#bookingForm");
@@ -347,8 +483,8 @@
 
       var endpoint = C.booking && C.booking.endpoint;
       if (endpoint) {
-        var btn = bForm.querySelector(".bf-submit");
-        btn.disabled = true; status.className = "bf-status"; status.textContent = "보내는 중...";
+        var submitBtn = bForm.querySelector(".bf-submit");
+        submitBtn.disabled = true; status.className = "bf-status"; status.textContent = "보내는 중...";
         fetch(endpoint, { method: "POST", headers: { "Accept": "application/json" }, body: fd })
           .then(function (r) {
             if (r.ok) {
@@ -358,11 +494,10 @@
           }).catch(function () {
             status.className = "bf-status err";
             status.textContent = "전송에 실패했어요. 카카오톡/인스타그램으로 연락 부탁드려요.";
-          }).then(function () { btn.disabled = false; });
+          }).then(function () { submitBtn.disabled = false; });
       } else if (C.email) {
         var subject = "[상담문의] " + d.name + "님";
-        var body =
-          "이름/닉네임: " + d.name + "\n연락처: " + d.phone +
+        var body = "이름/닉네임: " + d.name + "\n연락처: " + d.phone +
           "\n희망 부위: " + (d.part || "-") + "\n크기: " + (d.size || "-") +
           "\n\n문의내용:\n" + (d.message || "-");
         window.location.href = "mailto:" + C.email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
@@ -372,7 +507,7 @@
         var txt = "[상담문의] " + d.name + " / " + d.phone +
           " / 부위 " + (d.part || "-") + " / 크기 " + (d.size || "-") +
           (d.message ? "\n" + d.message : "");
-        if (navigator.clipboard) { try { navigator.clipboard.writeText(txt); } catch (e) {} }
+        if (navigator.clipboard) { try { navigator.clipboard.writeText(txt); } catch (ex) {} }
         status.className = "bf-status ok";
         status.textContent = "문의 내용이 복사되었어요. 카카오톡 채널 또는 인스타그램으로 붙여넣어 보내주세요!";
         if (C.kakao) window.open(C.kakao, "_blank");
@@ -381,7 +516,33 @@
     });
   }
 
-  /* ---------- 라이트박스 (사진 + 영상) ---------- */
+  /* ---------- 인스타그램 CTA ---------- */
+  (function () {
+    var instaGrid = document.getElementById("instaGrid");
+    var instaHandle = document.getElementById("instaHandle");
+    var instaFollowBtn = document.getElementById("instaFollowBtn");
+    var instaLink = C.instagram || "https://instagram.com/tatoomy";
+    var handle = instaLink.replace(/.*instagram\.com\//, "@").replace(/\/$/, "");
+
+    if (instaHandle) instaHandle.textContent = handle;
+    if (instaFollowBtn) instaFollowBtn.href = instaLink;
+
+    if (!instaGrid) return;
+    var tileImages = ALBUMS.slice(0, 6).map(function (album) { return album.cover; }).filter(Boolean);
+    if (!tileImages.length && C.flash) {
+      C.flash.slice(0, 6).forEach(function (f) { if (f.image) tileImages.push(f.image); });
+    }
+    while (tileImages.length < 6 && tileImages.length) {
+      tileImages.push(tileImages[tileImages.length % tileImages.length]);
+    }
+    instaGrid.innerHTML = tileImages.slice(0, 6).map(function (src) {
+      return '<a class="insta-tile" href="' + esc(instaLink) + '" target="_blank" rel="noopener">' +
+        '<img src="' + esc(src) + '" alt="Instagram" loading="lazy" />' +
+      '</a>';
+    }).join("");
+  })();
+
+  /* ---------- 라이트박스 ---------- */
   var lb = $("#lightbox"), lbStage = $("#lbStage");
   var activeItems = [];
   var activeAlbumTitle = "";
@@ -486,6 +647,6 @@
   }
 
   /* ---------- 초기 실행 ---------- */
-  renderGallery("linework");
+  renderGallery("all");
   observeReveal();
 })();
