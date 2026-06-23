@@ -1,0 +1,227 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# 업로드한 사진이 저장되는 폴더 (Git 기본 미디어 라이브러리)
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+# 편집 화면 언어/문구
+locale: "ko"
+publish_mode: simple
+site_url: https://www.tatoo.my
+display_url: https://www.tatoo.my
+
+collections:
+  - name: "settings"
+    label: "tatoomy 관리"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - name: "site"
+        label: "홈페이지 전체 편집"
+        file: "content/settings.json"
+        description: "사진·문구·가격·후기·Q&A를 관리합니다. 저장 후 우측 상단 Publish를 누르면 사이트에 반영됩니다."
+        fields:
+          # ---------- 기본 정보 ----------
+          - { label: "브랜드명", name: "brand", widget: "string", hint: "사이트 곳곳에 표시되는 이름" }
+          - { label: "한 줄 문구(태그라인)", name: "tagline", widget: "string" }
+          - { label: "정책 고지(푸터)", name: "policy", widget: "string", required: false, hint: "예: 19세 미만 시술 불가 · 예약금 입금 후 예약 확정 · 노쇼 환불 불가" }
+          - { label: "인스타그램 주소", name: "instagram", widget: "string", required: false }
+          - { label: "카카오톡 채널 주소", name: "kakao", widget: "string", required: false }
+          - { label: "네이버 블로그 주소", name: "naverBlog", widget: "string", required: false }
+          - { label: "유튜브 주소", name: "youtube", widget: "string", required: false }
+          - { label: "전화번호(비우면 표시 안 됨)", name: "phone", widget: "string", required: false, default: "" }
+          - { label: "이메일(비우면 표시 안 됨)", name: "email", widget: "string", required: false, default: "" }
+
+          # ---------- 메인(첫 화면) ----------
+          - label: "메인 첫 화면"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "배경 사진", name: "image", widget: "image", required: false }
+              - { label: "큰 제목", name: "title", widget: "string" }
+              - { label: "작은 문구", name: "subtitle", widget: "string" }
+
+          # ---------- 소개 ----------
+          - label: "소개(About)"
+            name: "about"
+            widget: "object"
+            fields:
+              - { label: "소개 사진", name: "image", widget: "image", required: false }
+              - { label: "제목", name: "title", widget: "string" }
+              - { label: "소개 글", name: "body", widget: "text", hint: "줄바꿈으로 문단을 나눠 주세요." }
+
+          # ---------- 타투이스트 ----------
+          - label: "타투이스트 소개"
+            name: "artist"
+            widget: "object"
+            fields:
+              - { label: "섹션 제목", name: "title", widget: "string", default: "타투이스트 KAI" }
+              - { label: "이름/활동명", name: "name", widget: "string", default: "KAI" }
+              - { label: "역할/직함", name: "role", widget: "string", default: "tatoomy 대표 타투이스트" }
+              - { label: "프로필 사진", name: "image", widget: "image", required: false }
+              - { label: "통계 라벨", name: "countLabel", widget: "string", default: "누적 작업", hint: "예: 누적 작업, 경력" }
+              - { label: "통계 값", name: "workCount", widget: "string", default: "2,000+", hint: "예: 2,000+, 8년" }
+              - { label: "작업 철학/소개", name: "body", widget: "text", hint: "줄바꿈으로 문단을 나눠 주세요." }
+              - { label: "직접 작업 안내 문구", name: "promise", widget: "string", default: "모든 작업은 대표 타투이스트가 직접 진행합니다." }
+
+          # ---------- 위생·안전 ----------
+          - label: "위생·안전 포인트"
+            name: "trustBadges"
+            widget: "list"
+            label_singular: "포인트"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "아이콘 짧은 글자", name: "icon", widget: "string", hint: "예: 1회용, 멸균, 정품" }
+              - { label: "제목", name: "title", widget: "string" }
+              - { label: "설명", name: "text", widget: "string" }
+
+          # ---------- 포트폴리오 ----------
+          - label: "포트폴리오 앨범"
+            name: "portfolioAlbums"
+            widget: "list"
+            label_singular: "앨범"
+            summary: "{{fields.title}} · {{fields.category}}"
+            hint: "스타일이나 작업 건별로 앨범을 만들고, 그 안에 사진을 여러 장 넣어주세요. 사이트에는 앨범 대표 사진만 먼저 보이고, 클릭하면 앨범 안 사진을 넘겨볼 수 있습니다."
+            fields:
+              - { label: "앨범 제목", name: "title", widget: "string" }
+              - { label: "대표 사진(목록에 보이는 사진)", name: "cover", widget: "image", required: false, hint: "비워두면 앨범 안 첫 번째 사진이 대표 사진으로 보입니다." }
+              - { label: "짧은 설명", name: "description", widget: "string", required: false }
+              - label: "스타일 분류"
+                name: "category"
+                widget: "select"
+                options:
+                  - { label: "라인워크", value: "linework" }
+                  - { label: "블랙워크", value: "blackwork" }
+                  - { label: "컬러", value: "color" }
+                  - { label: "레터링", value: "lettering" }
+                  - { label: "미니멀", value: "minimal" }
+                  - { label: "커버업", value: "coverup" }
+              - label: "앨범 안 사진·영상"
+                name: "images"
+                widget: "list"
+                label_singular: "사진"
+                summary: "{{fields.caption}}"
+                fields:
+                  - { label: "사진", name: "image", widget: "image", required: false }
+                  - { label: "유튜브 영상 ID(영상일 때만)", name: "youtube", widget: "string", required: false, default: "" }
+                  - { label: "사진 설명", name: "caption", widget: "string", required: false }
+
+          # ---------- 가격 ----------
+          - label: "작업 가격"
+            name: "products"
+            widget: "list"
+            label_singular: "상품"
+            summary: "{{fields.name}} · {{fields.price}}"
+            fields:
+              - { label: "상품명", name: "name", widget: "string" }
+              - { label: "설명", name: "desc", widget: "string", required: false }
+              - { label: "가격", name: "price", widget: "string", hint: "예: 100,000원~ / 상담 후 결정" }
+              - label: "포함 특징"
+                name: "features"
+                widget: "list"
+                field: { label: "특징", name: "feature", widget: "string" }
+
+          # ---------- 상품 상세 안내 ----------
+          - label: "작업 상세 안내"
+            name: "productGuide"
+            widget: "object"
+            fields:
+              - label: "포함사항"
+                name: "inclusions"
+                widget: "list"
+                field: { label: "포함사항", name: "item", widget: "string" }
+              - label: "추가 옵션"
+                name: "options"
+                widget: "list"
+                field: { label: "추가 옵션", name: "item", widget: "string" }
+              - label: "진행 방식"
+                name: "flow"
+                widget: "list"
+                field: { label: "진행 방식", name: "item", widget: "string" }
+
+          # ---------- 진행 절차 ----------
+          - label: "진행 절차"
+            name: "process"
+            widget: "list"
+            label_singular: "단계"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "단계 제목", name: "title", widget: "string" }
+              - { label: "설명", name: "desc", widget: "string", required: false }
+
+          # ---------- 애프터케어 ----------
+          - label: "애프터케어(시술 후 관리)"
+            name: "aftercare"
+            widget: "object"
+            fields:
+              - { label: "제목", name: "title", widget: "string", default: "시술 후 관리" }
+              - { label: "안내 문구", name: "intro", widget: "text", required: false }
+              - label: "관리 순서"
+                name: "steps"
+                widget: "list"
+                field: { label: "단계", name: "step", widget: "string" }
+              - label: "주의사항"
+                name: "cautions"
+                widget: "list"
+                field: { label: "주의사항", name: "caution", widget: "string" }
+
+          # ---------- 후기 ----------
+          - label: "손님 후기"
+            name: "reviews"
+            widget: "list"
+            label_singular: "후기"
+            summary: "{{fields.name}} · {{fields.part}}"
+            fields:
+              - { label: "작성자", name: "name", widget: "string" }
+              - { label: "작업/부위", name: "part", widget: "string", required: false }
+              - { label: "날짜", name: "date", widget: "string", required: false }
+              - { label: "후기 내용", name: "text", widget: "text" }
+              - { label: "후기 사진(선택)", name: "image", widget: "image", required: false }
+
+          # ---------- 예약 가능 일정 ----------
+          - label: "예약 가능 일정"
+            name: "availability"
+            widget: "object"
+            fields:
+              - { label: "제목", name: "title", widget: "string", default: "예약 가능 일정" }
+              - { label: "현재 예약 현황", name: "status", widget: "string" }
+              - { label: "안내 문구", name: "note", widget: "string", required: false }
+              - label: "상세 안내"
+                name: "items"
+                widget: "list"
+                field: { label: "안내", name: "item", widget: "string" }
+
+          # ---------- 오시는 길 ----------
+          - label: "오시는 길"
+            name: "location"
+            widget: "object"
+            fields:
+              - { label: "제목", name: "title", widget: "string", default: "오시는 길" }
+              - { label: "주소", name: "address", widget: "string", required: false }
+              - { label: "안내 문구", name: "note", widget: "string", required: false }
+              - { label: "지도 임베드 주소(선택)", name: "mapEmbed", widget: "string", required: false, hint: "구글/카카오 지도 '공유 → 지도 퍼가기'의 iframe src 주소. 비우면 '지도에서 보기' 링크로 표시됩니다." }
+              - label: "교통 안내"
+                name: "transit"
+                widget: "list"
+                field: { label: "교통", name: "item", widget: "string" }
+
+          # ---------- Q&A ----------
+          - label: "자주 묻는 질문(Q&A)"
+            name: "faq"
+            widget: "list"
+            label_singular: "질문"
+            summary: "{{fields.q}}"
+            fields:
+              - { label: "질문", name: "q", widget: "string" }
+              - { label: "답변", name: "a", widget: "text" }
+
+          # ---------- 상담 문의 폼 ----------
+          - label: "상담 문의 폼 설정"
+            name: "booking"
+            widget: "object"
+            fields:
+              - { label: "폼 위 안내 문구", name: "note", widget: "string", required: false }
+              - { label: "Formspree 주소(선택)", name: "endpoint", widget: "string", required: false, default: "", hint: "비우면 메일앱/카카오로 연결됩니다." }

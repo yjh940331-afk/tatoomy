@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tatoomy · 타투 스튜디오</title>
+  <meta name="description" content="tatoomy - 라인워크부터 블랙워크까지, 당신의 이야기를 새기는 타투. 도안 상담·예약 안내." />
+
+  <!-- 폰트 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ============ 헤더 ============ -->
+  <header class="site-header" id="header">
+    <div class="header-inner">
+      <a href="#hero" class="logo" data-brand>tatoomy</a>
+
+      <nav class="nav" id="nav">
+        <a href="#about">About</a>
+        <a href="#artist">Artist</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#price">Price</a>
+        <a href="#process">Process</a>
+        <a href="#reviews">Review</a>
+        <a href="#location">Location</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ 히어로 ============ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg" data-hero-bg></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow" data-tagline>당신의 이야기를 피부에 새깁니다</p>
+      <h1 class="hero-title" data-hero-title>tatoomy</h1>
+      <p class="hero-sub" data-hero-sub>Fine Line · Blackwork · Lettering</p>
+      <a href="#portfolio" class="hero-btn">VIEW PORTFOLIO</a>
+    </div>
+    <div class="scroll-hint"><span></span></div>
+  </section>
+
+  <!-- ============ 소개 ============ -->
+  <section class="about section" id="about">
+    <div class="about-grid">
+      <div class="about-img reveal reveal-left">
+        <img data-about-img alt="tatoomy 스튜디오" />
+      </div>
+      <div class="about-text reveal reveal-right">
+        <p class="section-label">ABOUT</p>
+        <h2 class="section-title" data-about-title>Ink that lasts</h2>
+        <div class="about-body" data-about-body></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 타투이스트 프로필 ============ -->
+  <section class="artist section" id="artist">
+    <div class="artist-grid">
+      <div class="artist-copy reveal reveal-left">
+        <p class="section-label">ARTIST</p>
+        <h2 class="section-title" data-artist-title>타투이스트 KAI</h2>
+        <p class="artist-role" data-artist-role>tatoomy 대표 타투이스트</p>
+        <div class="artist-body" data-artist-body></div>
+        <p class="artist-promise" data-artist-promise></p>
+      </div>
+      <div class="artist-profile reveal reveal-right">
+        <img data-artist-img alt="tatoomy 타투이스트" />
+        <div class="profile-stats">
+          <span data-artist-count-label>누적 작업</span>
+          <strong data-artist-count>2,000+</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 위생·안전 ============ -->
+  <section class="why section" id="safety">
+    <div class="section-head center reveal">
+      <p class="section-label">SAFETY &amp; HYGIENE</p>
+      <h2 class="section-title">안심하고 맡길 수 있도록</h2>
+    </div>
+    <div class="trust-grid" id="trustGrid"><!-- JS로 자동 생성 --></div>
+  </section>
+
+  <!-- ============ 포트폴리오 ============ -->
+  <section class="portfolio section" id="portfolio">
+    <div class="section-head center reveal">
+      <p class="section-label">PORTFOLIO</p>
+      <h2 class="section-title">작업물</h2>
+    </div>
+
+    <div class="filters reveal" id="filters">
+      <button class="filter active" data-filter="linework">라인워크</button>
+      <button class="filter" data-filter="blackwork">블랙워크</button>
+      <button class="filter" data-filter="color">컬러</button>
+      <button class="filter" data-filter="lettering">레터링</button>
+      <button class="filter" data-filter="minimal">미니멀</button>
+      <button class="filter" data-filter="coverup">커버업</button>
+    </div>
+
+    <div class="gallery" id="gallery"><!-- JS로 자동 생성 --></div>
+  </section>
+
+  <!-- ============ 가격 ============ -->
+  <section class="price section" id="price">
+    <div class="section-head center reveal">
+      <p class="section-label">PRICE</p>
+      <h2 class="section-title">작업 안내</h2>
+    </div>
+    <div class="price-grid" id="priceGrid"><!-- JS로 자동 생성 --></div>
+    <div class="product-guide reveal" id="productGuide"><!-- JS로 자동 생성 --></div>
+    <p class="price-note reveal">* 도안·사이즈·부위에 따라 가격이 달라집니다. 정확한 견적은 도안 상담 후 안내해 드립니다.</p>
+  </section>
+
+  <!-- ============ 진행 절차 ============ -->
+  <section class="process section" id="process">
+    <div class="section-head center reveal">
+      <p class="section-label">PROCESS</p>
+      <h2 class="section-title">진행 절차</h2>
+    </div>
+    <div class="process-list" id="processList"><!-- JS로 자동 생성 --></div>
+  </section>
+
+  <!-- ============ 애프터케어 ============ -->
+  <section class="aftercare section" id="aftercare">
+    <div class="aftercare-inner">
+      <div class="aftercare-head reveal reveal-left">
+        <p class="section-label">AFTERCARE</p>
+        <h2 class="section-title" data-aftercare-title>시술 후 관리</h2>
+        <p class="aftercare-intro" data-aftercare-intro></p>
+      </div>
+      <div class="aftercare-cols">
+        <div class="aftercare-card reveal">
+          <h3>이렇게 관리해 주세요</h3>
+          <ol id="aftercareSteps"><!-- JS로 자동 생성 --></ol>
+        </div>
+        <div class="aftercare-card caution reveal">
+          <h3>주의사항</h3>
+          <ul id="aftercareCautions"><!-- JS로 자동 생성 --></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 후기 ============ -->
+  <section class="reviews section" id="reviews">
+    <div class="section-head center reveal">
+      <p class="section-label">REVIEW</p>
+      <h2 class="section-title">손님 후기</h2>
+    </div>
+    <div class="review-grid" id="reviewGrid"><!-- JS로 자동 생성 --></div>
+  </section>
+
+  <!-- ============ 예약 가능 일정 ============ -->
+  <section class="availability section" id="availability">
+    <div class="availability-inner reveal">
+      <div>
+        <p class="section-label">BOOKING STATUS</p>
+        <h2 class="section-title" data-availability-title>예약 가능 일정</h2>
+        <p class="availability-note" data-availability-note></p>
+      </div>
+      <div class="availability-panel">
+        <p data-availability-status>이번 달 예약 마감 임박 · 다음 달 상담 중</p>
+        <ul id="availabilityList"><!-- JS로 자동 생성 --></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 오시는 길 ============ -->
+  <section class="location section" id="location">
+    <div class="section-head center reveal">
+      <p class="section-label">LOCATION</p>
+      <h2 class="section-title" data-location-title>오시는 길</h2>
+    </div>
+    <div class="location-grid reveal">
+      <div class="location-map" id="locationMap"><!-- JS로 자동 생성 (지도) --></div>
+      <div class="location-info">
+        <p class="loc-address" data-location-address></p>
+        <p class="loc-note" data-location-note></p>
+        <ul class="loc-transit" id="locationTransit"><!-- JS로 자동 생성 --></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Q&A ============ -->
+  <section class="faq section" id="faq">
+    <div class="section-head center reveal">
+      <p class="section-label">Q&amp;A</p>
+      <h2 class="section-title">자주 묻는 질문</h2>
+    </div>
+    <div class="faq-list" id="faqList"><!-- JS로 자동 생성 --></div>
+  </section>
+
+  <!-- ============ 문의 ============ -->
+  <section class="contact section" id="contact">
+    <div class="section-head center reveal">
+      <p class="section-label">CONTACT</p>
+      <h2 class="section-title">상담 &amp; 예약</h2>
+    </div>
+    <p class="contact-lead reveal" id="bookingNote">도안 상담과 예약을 도와드립니다. 원하시는 도안 사진이 있다면 함께 보내주세요.</p>
+
+    <form class="booking-form reveal" id="bookingForm">
+      <div class="bf-row">
+        <div><label>이름 / 닉네임 *</label><input type="text" name="name" required placeholder="성함 또는 닉네임" /></div>
+        <div><label>연락처 *</label><input type="text" name="phone" required placeholder="연락처 또는 인스타 아이디" /></div>
+      </div>
+      <div class="bf-row">
+        <div><label>희망 부위</label><input type="text" name="part" placeholder="예: 손목 안쪽" /></div>
+        <div><label>대략적인 크기</label><input type="text" name="size" placeholder="예: 5cm 내외" /></div>
+      </div>
+      <label>도안 / 문의 내용</label>
+      <textarea name="message" rows="4" placeholder="원하시는 도안, 스타일, 일정 등을 적어주세요."></textarea>
+      <button type="submit" class="bf-submit">상담 문의 보내기</button>
+      <p class="bf-status" id="bookingStatus"></p>
+    </form>
+
+    <p class="contact-or reveal">또는 아래 채널로 편하게 연락 주세요</p>
+    <div class="contact-links reveal" id="contactLinks"><!-- JS로 자동 생성 --></div>
+  </section>
+
+  <!-- ============ 푸터 ============ -->
+  <footer class="site-footer">
+    <p class="footer-brand" data-brand>tatoomy</p>
+    <p class="footer-policy" data-policy>19세 미만 시술 불가 · 예약금 입금 후 예약 확정 · 노쇼 시 예약금 환불 불가</p>
+    <p class="footer-copy">© <span id="year"></span> tatoomy. All rights reserved.</p>
+  </footer>
+
+  <!-- ============ 라이트박스 ============ -->
+  <div class="lightbox" id="lightbox">
+    <button class="lb-close" id="lbClose" aria-label="닫기">&times;</button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="이전">&#8249;</button>
+    <div class="lb-stage" id="lbStage"><!-- 사진/영상이 들어갑니다 --></div>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="다음">&#8250;</button>
+  </div>
+
+  <!-- 기본값(폴백) → CMS가 관리하는 settings.json 으로 덮어쓴 뒤 앱 실행 -->
+  <script src="js/site-config.js"></script>
+  <script>
+    (function () {
+      function run() { var s = document.createElement("script"); s.src = "js/main.js"; document.body.appendChild(s); }
+      fetch("content/settings.json", { cache: "no-store" })
+        .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+        .then(function (j) { window.SITE_CONFIG = j; })
+        .catch(function () { /* settings.json 없으면 site-config.js 기본값 사용 */ })
+        .then(run);
+    })();
+  </script>
+
+  <!-- Netlify Identity: 관리자 초대 링크 처리 후 /admin/ 으로 이동 -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", function (user) {
+        if (!user) {
+          window.netlifyIdentity.on("login", function () { document.location.href = "/admin/"; });
+        }
+      });
+    }
+  </script>
+</body>
+</html>
