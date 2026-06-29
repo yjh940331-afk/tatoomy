@@ -5,9 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>tatoomy · 타투 스튜디오</title>
   <meta name="description" content="tatoomy - 라인워크부터 블랙워크까지, 당신의 이야기를 새기는 타투. 플래시·도안 상담·예약 안내." />
+  <meta name="theme-color" content="#0d0d0f" />
+  <link rel="canonical" href="https://www.tatoo.my/" />
   <!-- OG / 소셜 미리보기 -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://tatoo.my/" />
+  <meta property="og:url" content="https://www.tatoo.my/" />
+  <meta property="og:site_name" content="tatoomy" />
   <meta property="og:title" content="tatoomy · 타투 스튜디오" />
   <meta property="og:description" content="라인워크부터 블랙워크까지, 당신의 이야기를 새기는 타투. 플래시·도안 상담·예약 안내." />
   <meta property="og:image" content="https://tatoo.my/images/uploads/hero.jpg" />
@@ -18,10 +21,11 @@
   <meta name="twitter:title" content="tatoomy · 타투 스튜디오" />
   <meta name="twitter:description" content="라인워크부터 블랙워크까지, 당신의 이야기를 새기는 타투. 플래시·도안 상담·예약 안내." />
   <meta name="twitter:image" content="https://tatoo.my/images/uploads/hero.jpg" />
+  <link rel="preload" as="image" href="images/uploads/hero.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=20260624" />
 </head>
 <body>
 
@@ -40,7 +44,8 @@
         <a href="#location">Location</a>
         <a href="#contact">Contact</a>
       </nav>
-      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기">
+      <a href="#contact" class="header-cta">예약 문의</a>
+      <button class="nav-toggle" id="navToggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -54,9 +59,18 @@
       <p class="hero-eyebrow" data-tagline>당신의 이야기를 피부에 새깁니다</p>
       <h1 class="hero-title" data-hero-title>tatoomy</h1>
       <p class="hero-sub" data-hero-sub>Fine Line · Blackwork · Lettering</p>
-      <a href="#portfolio" class="hero-btn">VIEW PORTFOLIO</a>
+      <div class="hero-actions">
+        <a href="#contact" class="hero-btn hero-btn-primary">상담 예약</a>
+        <a href="#portfolio" class="hero-btn hero-btn-ghost">PORTFOLIO</a>
+      </div>
+      <div class="hero-proof" id="heroProof" aria-label="tatoomy 신뢰 포인트"></div>
     </div>
     <div class="scroll-hint"><span></span></div>
+  </section>
+
+  <!-- ============ 브랜드 시그널 ============ -->
+  <section class="signature-bar" id="signature">
+    <div class="signature-inner" id="signatureStats"></div>
   </section>
 
   <!-- ============ 소개 ============ -->
@@ -100,6 +114,18 @@
       <h2 class="section-title">안심하고 맡길 수 있도록</h2>
     </div>
     <div class="trust-grid" id="trustGrid"></div>
+  </section>
+
+  <!-- ============ 대표 작업 ============ -->
+  <section class="featured-work section" id="featured">
+    <div class="featured-head">
+      <div>
+        <p class="section-label">FEATURED WORK</p>
+        <h2 class="section-title" id="featuredTitle">대표 작업</h2>
+      </div>
+      <p class="featured-desc" id="featuredDesc">스타일과 회복 후 발색이 잘 드러나는 작업을 먼저 보여드립니다.</p>
+    </div>
+    <div class="featured-grid" id="featuredGrid"></div>
   </section>
 
   <!-- ============ 플래시 ============ -->
@@ -267,29 +293,34 @@
       <p class="section-label">CONTACT</p>
       <h2 class="section-title">상담 &amp; 예약</h2>
     </div>
-    <p class="contact-lead reveal" id="bookingNote">도안 상담과 예약을 도와드립니다. 원하시는 도안 사진이 있다면 함께 보내주세요.</p>
+    <div class="contact-layout" id="contactLayout">
+      <div class="contact-main">
+        <p class="contact-lead reveal" id="bookingNote">도안 상담과 예약을 도와드립니다. 원하시는 도안 사진이 있다면 함께 보내주세요.</p>
 
-    <form class="booking-form reveal" id="bookingForm">
-      <div class="bf-row">
-        <div><label>이름 / 닉네임 *</label><input type="text" name="name" required placeholder="성함 또는 닉네임" /></div>
-        <div><label>연락처 *</label><input type="text" name="phone" required placeholder="연락처 또는 인스타 아이디" /></div>
-      </div>
-      <div class="bf-row">
-        <div><label>희망 부위</label><input type="text" name="part" placeholder="예: 손목 안쪽" /></div>
-        <div><label>대략적인 크기</label><input type="text" name="size" placeholder="예: 5cm 내외" /></div>
-      </div>
-      <label>도안 / 문의 내용</label>
-      <textarea name="message" rows="4" placeholder="원하시는 도안, 스타일, 일정 등을 적어주세요."></textarea>
-      <label class="policy-check">
-        <input type="checkbox" name="policy" id="policyCheck" required />
-        <span><button type="button" class="policy-link" id="openPolicy">예약 정책</button>을 읽었으며 동의합니다 *</span>
-      </label>
-      <button type="submit" class="bf-submit">상담 문의 보내기</button>
-      <p class="bf-status" id="bookingStatus"></p>
-    </form>
+        <form class="booking-form reveal" id="bookingForm">
+          <div class="bf-row">
+            <div><label>이름 / 닉네임 *</label><input type="text" name="name" required placeholder="성함 또는 닉네임" autocomplete="name" /></div>
+            <div><label>연락처 *</label><input type="text" name="phone" required placeholder="연락처 또는 인스타 아이디" autocomplete="tel" /></div>
+          </div>
+          <div class="bf-row">
+            <div><label>희망 부위</label><input type="text" name="part" placeholder="예: 손목 안쪽" /></div>
+            <div><label>대략적인 크기</label><input type="text" name="size" placeholder="예: 5cm 내외" /></div>
+          </div>
+          <label>도안 / 문의 내용</label>
+          <textarea name="message" rows="4" placeholder="원하시는 도안, 스타일, 일정 등을 적어주세요."></textarea>
+          <label class="policy-check">
+            <input type="checkbox" name="policy" id="policyCheck" required />
+            <span><button type="button" class="policy-link" id="openPolicy">예약 정책</button>을 읽었으며 동의합니다 *</span>
+          </label>
+          <button type="submit" class="bf-submit">상담 문의 보내기</button>
+          <p class="bf-status" id="bookingStatus"></p>
+        </form>
 
-    <p class="contact-or reveal">또는 아래 채널로 편하게 연락 주세요</p>
-    <div class="contact-links reveal" id="contactLinks"></div>
+        <p class="contact-or reveal">또는 아래 채널로 편하게 연락 주세요</p>
+        <div class="contact-links reveal" id="contactLinks"></div>
+      </div>
+      <aside class="contact-aside reveal" id="bookingPrep" hidden></aside>
+    </div>
   </section>
 
   <!-- ============ 인스타그램 CTA ============ -->
@@ -310,8 +341,14 @@
     <p class="footer-copy">© <span id="year"></span> tatoomy. All rights reserved.</p>
   </footer>
 
+  <!-- ============ 빠른 예약 CTA ============ -->
+  <div class="quick-contact" id="quickContact" hidden>
+    <a class="quick-contact-primary" href="#contact">상담 예약</a>
+    <a class="quick-contact-secondary" id="quickContactDm" href="#contact">DM 문의</a>
+  </div>
+
   <!-- ============ 라이트박스 ============ -->
-  <div class="lightbox" id="lightbox">
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="포트폴리오 크게 보기" aria-hidden="true">
     <button class="lb-close" id="lbClose" aria-label="닫기">&times;</button>
     <button class="lb-nav lb-prev" id="lbPrev" aria-label="이전">&#8249;</button>
     <div class="lb-stage" id="lbStage"></div>
@@ -319,7 +356,7 @@
   </div>
 
   <!-- ============ 예약 정책 모달 ============ -->
-  <div class="policy-modal" id="policyModal" role="dialog" aria-modal="true" aria-labelledby="policyModalTitle">
+  <div class="policy-modal" id="policyModal" role="dialog" aria-modal="true" aria-labelledby="policyModalTitle" aria-hidden="true">
     <div class="pm-backdrop" id="pmBackdrop"></div>
     <div class="pm-inner">
       <button class="pm-close" id="pmClose" aria-label="닫기">&times;</button>
@@ -331,10 +368,11 @@
   </div>
 
   <!-- 기본값(폴백) → CMS가 관리하는 settings.json 으로 덮어쓴 뒤 앱 실행 -->
-  <script src="js/site-config.js?v=20260623"></script>
+  <script src="js/site-config.js?v=20260624"></script>
+  <script type="application/ld+json" id="structuredData"></script>
   <script>
     (function () {
-      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260623"; document.body.appendChild(s); }
+      function run() { var s = document.createElement("script"); s.src = "js/main.js?v=20260624c"; document.body.appendChild(s); }
       fetch("content/settings.json", { cache: "no-store" })
         .then(function (r) { if (!r.ok) throw 0; return r.json(); })
         .then(function (j) { window.SITE_CONFIG = j; })
